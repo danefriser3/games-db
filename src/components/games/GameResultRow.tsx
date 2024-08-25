@@ -1,4 +1,4 @@
-import { GameDetail, GamesController } from "../../utils/GamesController";
+import { GameDetail } from "../../utils/GamesController";
 
 const GameResultRow = ({ game }: { game: GameDetail }) => {
   return (
