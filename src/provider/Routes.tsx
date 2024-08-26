@@ -14,7 +14,7 @@ const Routes = () => {
     return (
       <>
         <Header setSearch={setSearchRes} />
-        <div className="bg-slate-500">{children}</div>
+        <div className="">{children}</div>
       </>
     );
   };

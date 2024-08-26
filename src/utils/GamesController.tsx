@@ -4,6 +4,8 @@ export interface AuthToken {
   token_type: string;
 }
 
+const dev = false;
+const url = dev ? "http://localhost:3000" : "https://games-db-be.vercel.app";
 export class GamesController {
   private client_id = "jjy9wkuypf4iup7yjr2iydthya4xuy";
   private client_secret = "sozwidhd3itvdc5tr35fplkvl22sdx";
@@ -20,37 +22,18 @@ export class GamesController {
     ).then((response) => response.json());
   };
 
-  static getPopularityAPI = async (access_token: string, q: number) => {
-    return await fetch(
-      `https://games-db-pa7pciv93-danefriser3s-projects.vercel.app/api/pp`,
-      {
-        method: "POST",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ access_token, q }),
-      }
-    )
-      .then((result) => result.json())
-      .catch(() => {});
-  };
-
   static getGameByName = async (
     access_token: string,
     q: string
   ): Promise<GameDetail[]> => {
-    return await fetch(
-      `https://games-db-pa7pciv93-danefriser3s-projects.vercel.app/api/bo`,
-      {
-        method: "POST",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ access_token, q }),
-      }
-    )
+    return await fetch(`${url}/api/bo`, {
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ access_token, q }),
+    })
       .then((result) => result.json())
       .catch(() => {});
   };
@@ -58,20 +41,17 @@ export class GamesController {
     access_token: string,
     q: number
   ): Promise<GameDetail> => {
-    return await fetch(
-      `https://games-db-pa7pciv93-danefriser3s-projects.vercel.app/api/abc`,
-      {
-        method: "POST",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ access_token, q }),
-      }
-    )
+    return await fetch(`${url}/api/abc`, {
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ access_token, q }),
+    })
       .then((result) => result.json())
       .then((t) => t[0])
-      .catch(() => {});
+      .catch((e) => console.log(e));
   };
 }
 

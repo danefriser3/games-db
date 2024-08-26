@@ -3,41 +3,40 @@ import {
   GameDetail,
   GamesController,
   PlatformEnum,
-  PopularitySource,
   RatingBoards,
   RatingEnum,
   Regions,
 } from "../utils/GamesController";
 import { capitalize } from "../utils/funcs";
+import useSWR from "swr";
+import { v4 } from "uuid";
 
 const Game = () => {
   const [game, setGame] = useState<GameDetail>();
-  const [, setPopularitySource] = useState<PopularitySource[]>([]);
+
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get("id") ?? "0");
+  const { access_token } = JSON.parse(
+    localStorage.getItem("access_token") ?? ""
+  );
+
+  const { data, error, isLoading } = useSWR([access_token, id], ([a, b]) =>
+    GamesController.getGameById(a, b)
+  );
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const id = parseInt(params.get("id") ?? "0");
+    console.log(error);
+    setGame(data);
+  }, [data, error]);
 
-    const { access_token } = JSON.parse(
-      localStorage.getItem("access_token") ?? ""
-    );
-    GamesController.getGameById(access_token, id)
-      .then((t) => {
-        console.log(t);
-        setGame(t);
-      })
-      .catch((t) => console.log(t.message));
-    GamesController.getPopularityAPI(access_token, id).then((t) =>
-      setPopularitySource(t)
-    );
-  }, []);
+  if (isLoading) return;
 
   return (
     <div className="flex p-3 flex-col gap-4 w-full justify-center align-middle items-center">
       <div
         className="w-4/5 p-3 flex flex-col gap-3 after:opacity-10  text-white"
         style={{
-          backgroundImage: `url(${game?.cover.url
+          backgroundImage: `url(${game?.cover?.url
             .split("t_thumb")
             .join("t_720p")})`,
           backgroundSize: "cover",
@@ -53,9 +52,11 @@ const Game = () => {
                 dateStyle: "medium",
               })}
             </div>
-            <div className="text-[30px] w-3/7 underline underline-offset-2">
-              {game?.involved_companies[0].company.name}
-            </div>
+            {game?.involved_companies && (
+              <div className="text-[30px] w-3/7 underline underline-offset-2">
+                {game?.involved_companies[0]?.company.name}
+              </div>
+            )}
           </div>
         </div>
         <div
@@ -66,7 +67,7 @@ const Game = () => {
           }}
         >
           <img
-            src={game?.cover.url.split("t_thumb").join("t_cover_big")}
+            src={game?.cover?.url.split("t_thumb").join("t_cover_big")}
             className="h-full rounded-md shadow-2xl w-[350px] border-2 border-slate-500"
           />
           {(game?.videos && (
@@ -76,14 +77,15 @@ const Game = () => {
               height={400}
               width={725}
             />
-          )) || (
-            <img
-              src={game?.screenshots[0].url
-                .split("t_thumb")
-                .join("t_screenshot_big")}
-              className="h-full w-[725px] rounded-md shadow-2xl"
-            />
-          )}
+          )) ||
+            (game?.screenshots && (
+              <img
+                src={game?.screenshots[0].url
+                  .split("t_thumb")
+                  .join("t_screenshot_big")}
+                className="h-full w-[725px] rounded-md shadow-2xl"
+              />
+            ))}
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-2 p-3 border-2 gap-4 border-white rounded-md bg-black text-white">
               <div className="flex flex-col gap-2">
@@ -105,19 +107,6 @@ const Game = () => {
                 </div>
               )}
             </div>
-            {/* popularitySource.length !== 0 && (
-              <div className="grid grid-cols-3 gap-4">
-                {popularitySource?.map((pp) => (
-                  <div className="flex flex-col p-3 gap-3 border-2 bg-gray-500 border-white rounded-md text-center">
-                    <div></div>
-                    <div className="text-white capitalize">
-                      {pp.popularity_type.name}
-                    </div>
-                    <div>{pp.value}</div>
-                  </div>
-                ))}
-              </div>
-            ) */}
           </div>
         </div>
       </div>
@@ -148,8 +137,9 @@ const Game = () => {
                 <div className="font-bold">Main Developer</div>
                 <div>
                   {
-                    game?.involved_companies.find((i) => i.developer === true)
-                      ?.company.name
+                    game?.involved_companies?.find(
+                      (i: any) => i.developer === true
+                    )?.company.name
                   }
                 </div>
               </div>
@@ -157,9 +147,9 @@ const Game = () => {
                 <div className="font-bold">Publishers</div>
                 <div className="flex flex-col">
                   {game?.involved_companies
-                    .filter((i) => i.publisher === true)
-                    ?.map((i) => (
-                      <div>{i.company.name}</div>
+                    ?.filter((i: any) => i.publisher === true)
+                    ?.map((i: any) => (
+                      <div key={v4()}>{i.company.name}</div>
                     ))}
                 </div>
               </div>
@@ -167,7 +157,7 @@ const Game = () => {
                 <div className="font-bold">Generi</div>
                 <div>
                   {game?.genres?.map((i) => (
-                    <div>{i.name}</div>
+                    <div key={v4()}>{i.name}</div>
                   ))}
                 </div>
               </div>
@@ -175,7 +165,7 @@ const Game = () => {
                 <div className="font-bold">Modalità di gioco</div>
                 <div>
                   {game?.game_modes?.map((gm) => (
-                    <div>{gm.name}</div>
+                    <div key={v4()}>{gm.name}</div>
                   ))}
                 </div>
               </div>
@@ -183,7 +173,7 @@ const Game = () => {
                 <div className="font-bold">Temi</div>
                 <div>
                   {game?.themes?.map((gm) => (
-                    <div>{gm.name}</div>
+                    <div key={v4()}>{gm.name}</div>
                   ))}
                 </div>
               </div>
@@ -191,7 +181,7 @@ const Game = () => {
                 <div className="font-bold">Prospettiva di gioco</div>
                 <div>
                   {game?.player_perspectives?.map((gm) => (
-                    <div>{gm.name}</div>
+                    <div key={v4()}>{gm.name}</div>
                   ))}
                 </div>
               </div>
@@ -202,7 +192,7 @@ const Game = () => {
                 <div className="font-bold">Serie</div>
                 <div>
                   {game?.franchises?.map((f) => (
-                    <div>{f.name}</div>
+                    <div key={v4()}>{f.name}</div>
                   ))}
                 </div>
               </div>
@@ -210,7 +200,7 @@ const Game = () => {
                 <div className="font-bold">Spin of</div>
                 <div className="flex flex-col">
                   {game?.collections?.map((c) => (
-                    <div>{c.name}</div>
+                    <div key={v4()}>{c.name}</div>
                   ))}
                 </div>
               </div>
@@ -218,7 +208,7 @@ const Game = () => {
                 <div className="font-bold">Engine</div>
                 <div className="flex flex-col">
                   {game?.game_engines?.map((c) => (
-                    <div>{c.name}</div>
+                    <div key={v4()}>{c.name}</div>
                   ))}
                 </div>
               </div>
@@ -235,7 +225,10 @@ const Game = () => {
                 <div className="font-bold">Titolo localizzato</div>
                 <div className="flex flex-col">
                   {game?.game_localizations?.map((gl) => (
-                    <div className="flex flex-row gap-3 justify-between">
+                    <div
+                      key={v4()}
+                      className="flex flex-row gap-3 justify-between"
+                    >
                       <div className="font-bold">{gl.region.name}:</div>
                       <div>{gl.name}</div>
                     </div>
@@ -246,7 +239,10 @@ const Game = () => {
                 <div className="font-bold">Titoli alternativi</div>
                 <div className="flex flex-col">
                   {game?.alternative_names?.map((gl) => (
-                    <div className="flex flex-row gap-3 justify-between">
+                    <div
+                      key={v4()}
+                      className="flex flex-row gap-3 justify-between"
+                    >
                       <div className="font-bold">{gl.comment}:</div>
                       <div>{gl.name}</div>
                     </div>
@@ -260,7 +256,10 @@ const Game = () => {
               <div className="font-bold">Keyword</div>
               <div className="flex flex-wrap gap-2  max-h-60 overflow-auto">
                 {game?.keywords?.map((k) => (
-                  <div className="p-1 px-3 rounded-full w-auto bg-gray-400">
+                  <div
+                    key={v4()}
+                    className="p-1 px-3 rounded-full w-auto bg-gray-400"
+                  >
                     {k.name}
                   </div>
                 ))}
@@ -271,16 +270,19 @@ const Game = () => {
             <div className="font-bold">Giochi simili</div>
             <div className="grid grid-cols-4 gap-2  text-black">
               {game?.similar_games?.map((sm) => (
-                <div className="h-full rounded-md shadow-2xl">
+                <div
+                  key={v4()}
+                  className="h-full rounded-[0.5em] cursor-pointer shadow-[-2px_2px_2px_rgba(0,0,0,0.5)]  hover:shadow-[-2px_2px_7px_rgba(0,0,0,0.7)]"
+                  onClick={() => window.open(`/game?id=${sm.id}`, "_self")}
+                >
                   <img
-                    onClick={() => window.open(`/game?id=${sm.id}`, "_self")}
                     src={sm?.cover?.url.split("t_thumb").join("t_cover_big")}
-                    className="rounded-md"
+                    className="rounded-[0.5em_0.5em_0em_0em]"
                   />
                   <div className="p-3 flex flex-col gap-1">
                     <div className="font-semibold">{sm.name}</div>
                     <div className="font-semibold flex flex-row justify-between">
-                      <div>{sm.genres.map((s) => s.name)[0]}</div>
+                      <div>{sm.genres?.map((s) => s.name)[0]}</div>
                       <div>{sm.rating?.toFixed(1) ?? "N/A"}</div>
                     </div>
                   </div>
@@ -297,8 +299,8 @@ const Game = () => {
           <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-black">
             <div className="font-bold text-center">Release dates</div>
             <div className="flex flex-col gap-1">
-              {game?.release_dates.map((f) => (
-                <div className="flex flex-row justify-between">
+              {game?.release_dates?.map((f) => (
+                <div key={v4()} className="flex flex-row justify-between">
                   <div className="flex flex-row gap-2 items-center">
                     <div className="font-bold">{f.platform.name}</div>
                     <div className="font-semibold text-xs">
@@ -312,10 +314,10 @@ const Game = () => {
           </div>
           <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-black">
             <div className="font-bold text-center">Links</div>
-            {game?.websites.find((w) => w.category === PlatformEnum.Steam) && (
+            {game?.websites?.find((w) => w.category === PlatformEnum.Steam) && (
               <a
                 href={
-                  game?.websites.find((w) => w.category === PlatformEnum.Steam)
+                  game?.websites?.find((w) => w.category === PlatformEnum.Steam)
                     ?.url
                 }
                 target="_blank"
@@ -326,9 +328,12 @@ const Game = () => {
             <hr />
             <div className="grid grid-cols-3 gap-1">
               {game?.websites
-                .filter((f) => f.category !== PlatformEnum.Steam)
-                .map((f) => (
-                  <div className="flex flex-col justify-between border-2 p-2 text-center">
+                ?.filter((f) => f.category !== PlatformEnum.Steam)
+                ?.map((f) => (
+                  <div
+                    key={v4()}
+                    className="flex flex-col justify-between border-2 p-2 text-center"
+                  >
                     <a href={f.url} target="_blank">
                       {(() => {
                         return PlatformEnum[f.category];
@@ -346,10 +351,15 @@ const Game = () => {
             <div className="font-bold text-center">Age ratings</div>
             <div className="grid grid-cols-3 gap-3">
               {game?.age_ratings?.map((f) => (
-                <div className="flex flex-col justify-between border-2 p-2 text-center">
-                  <div className="text-[10px]">{RatingEnum[f.rating]}</div>
+                <div
+                  key={v4()}
+                  className="flex flex-col justify-between border-2 p-2 text-center"
+                >
+                  <div className="text-[10px]">
+                    {RatingEnum[f?.rating ?? 1]}
+                  </div>
                   <a href={f.rating_cover_url} title={f.synopsis}>
-                    {RatingBoards[f.category]}
+                    {RatingBoards[f?.category ?? 1]}
                   </a>
                 </div>
               ))}
@@ -359,7 +369,10 @@ const Game = () => {
             <div className="font-bold text-center">Supported Languages</div>
             <div className="grid grid-cols-3 gap-3">
               {game?.language_supports?.map((f) => (
-                <div className="flex flex-col justify-between border-2 p-2 text-center">
+                <div
+                  key={v4()}
+                  className="flex flex-col justify-between border-2 p-2 text-center"
+                >
                   <div className="">{f.language.native_name}</div>
                   <div className="text-[12px]">
                     {f.language_support_type.name}
