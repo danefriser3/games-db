@@ -14,7 +14,7 @@ const Routes = () => {
     return (
       <>
         <Header setSearch={setSearchRes} />
-        {children}
+        <div className="bg-slate-500">{children}</div>
       </>
     );
   };
@@ -40,7 +40,8 @@ const Routes = () => {
     },
     {
       path: "/game",
-      element: <Game />,
+      element:
+        searchRes.data.length > 0 ? <App searchRes={searchRes} /> : <Game />,
     },
   ];
 
