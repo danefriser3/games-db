@@ -42,19 +42,6 @@ const SearchBar = ({ setSearch }: SearchForm) => {
   const [ok, setOk] = useState(false);
   const searchForGame = () => {
     setOk(true);
-    /* const { access_token } = JSON.parse(
-      localStorage.getItem("access_token") ?? ""
-    );
-    GamesController.getGameByName(access_token, value).then((t) => {
-      console.log(t);
-      setSearch((p) => {
-        p.data = t;
-        return {
-          ...p,
-          data: p.data,
-        };
-      });
-    }); */
   };
 
   return (

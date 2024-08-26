@@ -117,22 +117,30 @@ const Game = () => {
         <div className="sm:flex lg:grid sm:flex-col lg:grid-cols-[2fr_1fr] gap-2">
           <div className="sm:w-full flex flex-col gap-4">
             <div className="h-auto p-3  bg-gray-700 text-white">
-              <div className="border-b-2 p-2 flex flex-row justify-between">
-                <div>Genere:</div>
-                <div>{game?.genres?.map((g) => g.name).join(", ")}</div>
-              </div>
-              <div className="border-b-2 p-2  flex flex-row justify-between">
-                <div>Piattaforma:</div>{" "}
-                <div>{game?.platforms?.map((p) => p.name).join(", ")}</div>
-              </div>
-              <div className="border-b-2 p-2  flex flex-row justify-between">
-                <div>Bundle:</div>{" "}
-                <div>{game?.bundles?.map((p) => p.name).join(", ")}</div>
-              </div>
-              <div className="border-b-2 p-2  flex flex-row justify-between">
-                <div>Espansioni:</div>{" "}
-                <div>{game?.expansions?.map((p) => p.name).join(", ")}</div>
-              </div>
+              {game?.genres && (
+                <div className="border-b-2 p-2 flex flex-row justify-between">
+                  <div>Genere:</div>
+                  <div>{game?.genres?.map((g) => g.name).join(", ")}</div>
+                </div>
+              )}
+              {game?.platforms && (
+                <div className="border-b-2 p-2  flex flex-row justify-between">
+                  <div>Piattaforma:</div>{" "}
+                  <div>{game?.platforms?.map((p) => p.name).join(", ")}</div>
+                </div>
+              )}
+              {game?.bundles && (
+                <div className="border-b-2 p-2  flex flex-row justify-between">
+                  <div>Bundle:</div>{" "}
+                  <div>{game?.bundles?.map((p) => p.name).join(", ")}</div>
+                </div>
+              )}
+              {game?.expansions && (
+                <div className="border-b-2 p-2  flex flex-row justify-between">
+                  <div>Espansioni:</div>{" "}
+                  <div>{game?.expansions?.map((p) => p.name).join(", ")}</div>
+                </div>
+              )}
               <div className="p-2">{game?.summary}</div>
             </div>
             <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-white">
@@ -147,247 +155,338 @@ const Game = () => {
                     }
                   </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <div className="font-bold">Publishers</div>
-                  <div className="flex flex-col">
-                    {game?.involved_companies
-                      ?.filter((i: any) => i.publisher === true)
-                      ?.map((i: any) => (
-                        <div key={v4()}>{i.company.name}</div>
+                {game?.involved_companies && (
+                  <div className="flex flex-col gap-1">
+                    <div className="font-bold">Publishers</div>
+                    <div className="flex flex-col">
+                      {game?.involved_companies
+                        ?.filter((i: any) => i.publisher === true)
+                        ?.map((i: any) => (
+                          <div key={v4()}>{i.company.name}</div>
+                        ))}
+                    </div>
+                  </div>
+                )}
+                {game?.genres && (
+                  <div className="flex flex-col gap-1">
+                    <div className="font-bold">Generi</div>
+                    <div>
+                      {game?.genres?.map((i) => (
+                        <div key={v4()}>{i.name}</div>
                       ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="font-bold">Generi</div>
-                  <div>
-                    {game?.genres?.map((i) => (
-                      <div key={v4()}>{i.name}</div>
-                    ))}
+                )}
+                {game?.game_modes && (
+                  <div className="flex flex-col gap-1">
+                    <div className="font-bold">Modalità di gioco</div>
+                    <div>
+                      {game?.game_modes?.map((gm) => (
+                        <div key={v4()}>{gm.name}</div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="font-bold">Modalità di gioco</div>
-                  <div>
-                    {game?.game_modes?.map((gm) => (
-                      <div key={v4()}>{gm.name}</div>
-                    ))}
+                )}
+                {game?.themes && (
+                  <div className="flex flex-col gap-1">
+                    <div className="font-bold">Temi</div>
+                    <div>
+                      {game?.themes?.map((gm) => (
+                        <div key={v4()}>{gm.name}</div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="font-bold">Temi</div>
-                  <div>
-                    {game?.themes?.map((gm) => (
-                      <div key={v4()}>{gm.name}</div>
-                    ))}
+                )}
+                {game?.player_perspectives && (
+                  <div className="flex flex-col gap-1">
+                    <div className="font-bold">Prospettiva di gioco</div>
+                    <div>
+                      {game?.player_perspectives?.map((gm) => (
+                        <div key={v4()}>{gm.name}</div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="font-bold">Prospettiva di gioco</div>
-                  <div>
-                    {game?.player_perspectives?.map((gm) => (
-                      <div key={v4()}>{gm.name}</div>
-                    ))}
-                  </div>
-                </div>
+                )}
               </div>
               <hr />
               <div className="grid grid-cols-3  gap-6 text-black">
-                <div className="flex flex-col gap-1">
-                  <div className="font-bold">Serie</div>
-                  <div>
-                    {game?.franchises?.map((f) => (
-                      <div key={v4()}>{f.name}</div>
-                    ))}
+                {game?.franchises && (
+                  <div className="flex flex-col gap-1">
+                    <div className="font-bold">Serie</div>
+                    <div>
+                      {game?.franchises?.map((f) => (
+                        <div key={v4()}>{f.name}</div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="font-bold">Spin of</div>
-                  <div className="flex flex-col">
-                    {game?.collections?.map((c) => (
-                      <div key={v4()}>{c.name}</div>
-                    ))}
+                )}
+                {game?.collections && (
+                  <div className="flex flex-col gap-1">
+                    <div className="font-bold">Spin of</div>
+                    <div className="flex flex-col">
+                      {game?.collections?.map((c) => (
+                        <div key={v4()}>{c.name}</div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <div className="font-bold">Engine</div>
-                  <div className="flex flex-col">
-                    {game?.game_engines?.map((c) => (
-                      <div key={v4()}>{c.name}</div>
-                    ))}
+                )}
+                {game?.game_engines && (
+                  <div className="flex flex-col gap-1">
+                    <div className="font-bold">Engine</div>
+                    <div className="flex flex-col">
+                      {game?.game_engines?.map((c) => (
+                        <div key={v4()}>{c.name}</div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
               <hr />
-              <div className="flex flex-col text-black">
-                <div className="font-bold">Story</div>
-                {game?.storyline}
-              </div>
+              {game?.storyline && (
+                <div className="flex flex-col text-black">
+                  <div className="font-bold">Story</div>
+                  {game?.storyline}
+                </div>
+              )}
             </div>
             <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-white">
               <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-5 text-black">
-                <div className="flex flex-col gap-1 border-b-2 border-b-gray-400 lg:border-r-2 p-2 lg:border-r-gray-400">
-                  <div className="font-bold">Titolo localizzato</div>
-                  <div className="flex flex-col">
-                    {game?.game_localizations?.map((gl) => (
-                      <div
-                        key={v4()}
-                        className="flex flex-row gap-3 justify-between"
-                      >
-                        <div className="font-bold">{gl.region.name}:</div>
-                        <div>{gl.name}</div>
-                      </div>
-                    ))}
+                {game?.game_localizations && (
+                  <div className="flex flex-col gap-1 border-b-2 border-b-gray-400 lg:border-r-2 p-2 lg:border-r-gray-400">
+                    <div className="font-bold">Titolo localizzato</div>
+                    <div className="flex flex-col">
+                      {game?.game_localizations?.map((gl) => (
+                        <div
+                          key={v4()}
+                          className="flex flex-row gap-3 justify-between"
+                        >
+                          <div className="font-bold">{gl.region.name}:</div>
+                          <div>{gl.name}</div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-1 p-2">
-                  <div className="font-bold">Titoli alternativi</div>
-                  <div className="flex flex-col">
-                    {game?.alternative_names?.map((gl) => (
+                )}
+                {game?.alternative_names && (
+                  <div className="flex flex-col gap-1 p-2">
+                    <div className="font-bold">Titoli alternativi</div>
+                    <div className="flex flex-col">
+                      {game?.alternative_names?.map((gl) => (
+                        <div
+                          key={v4()}
+                          className="flex flex-row gap-3 justify-between"
+                        >
+                          <div className="font-bold">{gl.comment}:</div>
+                          <div>{gl.name}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            {game?.keywords && (
+              <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-white">
+                <div className="flex flex-col gap-3 text-black">
+                  <div className="font-bold">Keyword</div>
+                  <div className="flex flex-wrap gap-2  max-h-60 overflow-auto">
+                    {game?.keywords?.map((k) => (
                       <div
                         key={v4()}
-                        className="flex flex-row gap-3 justify-between"
+                        className="p-1 px-3 rounded-full w-auto bg-gray-400"
                       >
-                        <div className="font-bold">{gl.comment}:</div>
-                        <div>{gl.name}</div>
+                        {k.name}
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-white">
-              <div className="flex flex-col gap-3 text-black">
-                <div className="font-bold">Keyword</div>
-                <div className="flex flex-wrap gap-2  max-h-60 overflow-auto">
-                  {game?.keywords?.map((k) => (
+            )}
+            {game?.similar_games && (
+              <div className="flex flex-col gap-2 h-auto p-3 bg-gray-300">
+                <div className="font-bold">Giochi simili</div>
+                <div className="grid sm:grid-cols-1 lg:grid-cols-5 gap-2  text-black">
+                  {game?.similar_games?.map((sm) => (
                     <div
                       key={v4()}
-                      className="p-1 px-3 rounded-full w-auto bg-gray-400"
+                      className="h-full rounded-[0.5em] cursor-pointer shadow-[-2px_2px_2px_rgba(0,0,0,0.5)]  hover:shadow-[-2px_2px_7px_rgba(0,0,0,0.7)]"
+                      onClick={() => window.open(`/game?id=${sm.id}`, "_self")}
                     >
-                      {k.name}
+                      <img
+                        src={sm?.cover?.url
+                          .split("t_thumb")
+                          .join("t_cover_big")}
+                        className="rounded-[0.5em_0.5em_0em_0em] w-full"
+                      />
+                      <div className="p-3 flex flex-col gap-1">
+                        <div className="font-semibold">{sm.name}</div>
+                        <div className="font-semibold flex flex-row justify-between text-xs">
+                          <div>{sm.genres?.map((s) => s.name)[0]}</div>
+                          <div>{sm.rating?.toFixed(1) ?? "N/A"}</div>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-2 h-auto p-3 bg-gray-300">
-              <div className="font-bold">Giochi simili</div>
-              <div className="grid sm:grid-cols-1 lg:grid-cols-5 gap-2  text-black">
-                {game?.similar_games?.map((sm) => (
-                  <div
-                    key={v4()}
-                    className="h-full rounded-[0.5em] cursor-pointer shadow-[-2px_2px_2px_rgba(0,0,0,0.5)]  hover:shadow-[-2px_2px_7px_rgba(0,0,0,0.7)]"
-                    onClick={() => window.open(`/game?id=${sm.id}`, "_self")}
-                  >
-                    <img
-                      src={sm?.cover?.url.split("t_thumb").join("t_cover_big")}
-                      className="rounded-[0.5em_0.5em_0em_0em] w-full"
-                    />
-                    <div className="p-3 flex flex-col gap-1">
-                      <div className="font-semibold">{sm.name}</div>
-                      <div className="font-semibold flex flex-row justify-between text-xs">
-                        <div>{sm.genres?.map((s) => s.name)[0]}</div>
-                        <div>{sm.rating?.toFixed(1) ?? "N/A"}</div>
-                      </div>
+            )}
+            {game?.screenshots && (
+              <div className="flex flex-col gap-2 h-auto p-3 bg-gray-300">
+                <div className="font-bold">Screenshots</div>
+                <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-2  text-black">
+                  {game?.screenshots?.map((sm) => (
+                    <div
+                      key={v4()}
+                      className="h-full bg-white rounded-[0.5em] cursor-pointer shadow-[-2px_2px_2px_rgba(0,0,0,0.5)]  hover:shadow-[-2px_2px_7px_rgba(0,0,0,0.7)]"
+                    >
+                      <img
+                        src={sm?.url.split("t_thumb").join("t_screenshot_huge")}
+                        className="rounded-[0.5em] w-full h-full"
+                      />
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+            {game?.videos && (
+              <div className="flex flex-col gap-2 h-auto p-3 bg-gray-300">
+                <div className="font-bold">Videos</div>
+                <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-2  text-black">
+                  {game?.videos?.map((sm) => (
+                    <div
+                      key={v4()}
+                      className="h-300 bg-white rounded-[0.5em] cursor-pointer shadow-[-2px_2px_2px_rgba(0,0,0,0.5)]  hover:shadow-[-2px_2px_7px_rgba(0,0,0,0.7)]"
+                    >
+                      <iframe
+                        src={"https://www.youtube.com/embed/" + sm.video_id}
+                        className="rounded-[0.5em] w-full h-[300px]"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
           <div className="sm:w-full flex flex-col gap-4">
             <div className="h-auto p-4 bg-gray-700 flex flex-row gap-2 text-white">
               <div className="font-bold">IGDB ID:</div>
               <div>{game?.id}</div>
             </div>
-            <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-black">
-              <div className="font-bold text-center">Release dates</div>
-              <div className="flex flex-col gap-1">
-                {game?.release_dates?.map((f) => (
-                  <div key={v4()} className="flex flex-row justify-between">
-                    <div className="flex flex-row gap-2 items-center">
-                      <div className="font-bold">{f.platform.name}</div>
-                      <div className="font-semibold text-xs">
-                        ({capitalize(Regions[f.region], "_")})
+            {game?.release_dates && (
+              <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-black">
+                <div className="font-bold text-center">Release dates</div>
+                <div className="flex flex-col gap-1">
+                  {game?.release_dates?.map((f) => (
+                    <div key={v4()} className="flex flex-row justify-between">
+                      <div className="flex flex-row gap-2 items-center">
+                        <div className="font-bold">{f.platform.name}</div>
+                        <div className="font-semibold text-xs">
+                          ({capitalize(Regions[f.region], "_")})
+                        </div>
                       </div>
+                      <div>{f.human}</div>
                     </div>
-                    <div>{f.human}</div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
             <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-black">
               <div className="font-bold text-center">Links</div>
               {game?.websites?.find(
                 (w) => w.category === PlatformEnum.Steam
               ) && (
-                <a
-                  href={
-                    game?.websites?.find(
-                      (w) => w.category === PlatformEnum.Steam
-                    )?.url
-                  }
-                  target="_blank"
-                >
-                  Steam
-                </a>
+                <div className="flex flex-row justify-center">
+                  <a
+                    className="text-center font-semibold  border-none hover:bg-gray-500 bg-gray-400 shadow-[-2px_2px_5px_rgba(0,0,0,0.5)] w-full border-2 px-3 py-1 rounded-md"
+                    href={
+                      game?.websites?.find(
+                        (w) => w.category === PlatformEnum.Steam
+                      )?.url
+                    }
+                    target="_blank"
+                  >
+                    Steam
+                  </a>
+                </div>
               )}
-              <hr />
-              <div className="grid grid-cols-3 gap-1">
-                {game?.websites
-                  ?.filter((f) => f.category !== PlatformEnum.Steam)
-                  ?.map((f) => (
+              {game?.websites && (
+                <>
+                  <hr />
+                  <div className="grid grid-cols-4 gap-3">
+                    {game?.websites
+                      ?.filter((f) => f.category !== PlatformEnum.Steam)
+                      ?.map((f) => (
+                        <div
+                          key={v4()}
+                          className="flex flex-col justify-between text-center"
+                        >
+                          <a
+                            className="text-center text-xs font-semibold  border-none hover:bg-gray-500 bg-gray-400 shadow-[-2px_2px_5px_rgba(0,0,0,0.5)] w-full border-2 px-3 py-2 rounded-md"
+                            href={f.url}
+                            target="_blank"
+                          >
+                            {(() => {
+                              return PlatformEnum[f.category];
+                            })()}
+                          </a>
+                        </div>
+                      ))}
+                  </div>
+                  <hr />
+                </>
+              )}
+              <div className="flex flex-row justify-center">
+                <a
+                  href={game?.url}
+                  className="text-center font-semibold  border-none hover:bg-gray-500 bg-gray-400 shadow-[-2px_2px_5px_rgba(0,0,0,0.5)] w-full border-2 px-3 py-1 rounded-md"
+                  target="_blank "
+                >
+                  IGDB Link
+                </a>
+              </div>
+            </div>
+            {game?.age_ratings && (
+              <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-black">
+                <div className="font-bold text-center">Age ratings</div>
+                <div className="flex flex-wrap gap-3">
+                  {game?.age_ratings?.map((f) => (
                     <div
                       key={v4()}
-                      className="flex flex-col justify-between border-2 p-2 text-center"
+                      className="flex flex-col justify-between shadow-[-2px_2px_5px_rgba(0,0,0,0.5)] w-fit bg-gray-400 p-3 py-2 text-center"
                     >
-                      <a href={f.url} target="_blank">
-                        {(() => {
-                          return PlatformEnum[f.category];
-                        })()}
+                      <div className="text-[13px]">
+                        {RatingEnum[f?.rating ?? 1]}
+                      </div>
+                      <a
+                        className="text-[10px]"
+                        href={f.rating_cover_url}
+                        title={f.synopsis}
+                      >
+                        {RatingBoards[f?.category ?? 1]}
                       </a>
                     </div>
                   ))}
+                </div>
               </div>
-              <hr />
-              <a href={game?.url} className="text-center" target="_blank ">
-                IGDB Link
-              </a>
-            </div>
-            <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-black">
-              <div className="font-bold text-center">Age ratings</div>
-              <div className="grid grid-cols-3 gap-3">
-                {game?.age_ratings?.map((f) => (
-                  <div
-                    key={v4()}
-                    className="flex flex-col justify-between border-2 p-2 text-center"
-                  >
-                    <div className="text-[10px]">
-                      {RatingEnum[f?.rating ?? 1]}
+            )}
+            {game?.language_supports && (
+              <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-black">
+                <div className="font-bold text-center">Supported Languages</div>
+                <div className="grid grid-cols-3 gap-3">
+                  {game?.language_supports?.map((f) => (
+                    <div
+                      key={v4()}
+                      className="flex flex-col justify-between shadow-[-2px_2px_5px_rgba(0,0,0,0.5)] w-full bg-gray-400 p-3 py-2 text-center"
+                    >
+                      <div>{f.language.native_name}</div>
+                      <div className="text-[12px]">
+                        {f.language_support_type.name}
+                      </div>
                     </div>
-                    <a href={f.rating_cover_url} title={f.synopsis}>
-                      {RatingBoards[f?.category ?? 1]}
-                    </a>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="h-auto p-3 flex flex-col  gap-4 bg-gray-300 text-black">
-              <div className="font-bold text-center">Supported Languages</div>
-              <div className="grid grid-cols-3 gap-3">
-                {game?.language_supports?.map((f) => (
-                  <div
-                    key={v4()}
-                    className="flex flex-col justify-between border-2 p-2 text-center"
-                  >
-                    <div>{f.language.native_name}</div>
-                    <div className="text-[12px]">
-                      {f.language_support_type.name}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

@@ -22,6 +22,19 @@ export class GamesController {
     ).then((response) => response.json());
   };
 
+  static getTop10Popular = async (access_token: string): Promise<any[]> => {
+    return await fetch(`${url}/api/pp`, {
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ access_token }),
+    })
+      .then((result) => result.json())
+      .catch(() => {});
+  };
+
   static getGameByName = async (
     access_token: string,
     q: string
