@@ -3,7 +3,7 @@ import { GameDetail } from "../../utils/GamesController";
 const GameResultRow = ({ game }: { game: GameDetail }) => {
   return (
     <div
-      className="bg-slate-500 w-[1024px] rounded-lg p-5 flex flex-row gap-5 cursor-pointer hover:shadow-[-2px_2px_7px_rgba(0,0,0,0.7)]"
+      className="bg-slate-500 w-full rounded-lg p-5 flex flex-row gap-5 cursor-pointer hover:shadow-[-2px_2px_7px_rgba(0,0,0,0.7)]"
       onClick={() => {
         window.open("/game?id=" + game.id);
       }}

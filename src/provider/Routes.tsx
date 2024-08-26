@@ -14,7 +14,7 @@ const Routes = () => {
     return (
       <>
         <Header setSearch={setSearchRes} />
-        <div className="">{children}</div>
+        <div className="top-[57px] relative">{children}</div>
       </>
     );
   };
