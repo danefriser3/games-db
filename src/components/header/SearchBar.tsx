@@ -20,7 +20,9 @@ const SearchSWR = ({
   );
 
   useEffect(() => {
-    if (data) {
+    if (error) {
+      setOk(false);
+    } else if (data) {
       setSearch((p: any) => {
         p.data = data;
         return {
@@ -30,7 +32,7 @@ const SearchSWR = ({
       });
       setOk(false);
     }
-  }, [data, setOk, setSearch]);
+  }, [data, error, setOk, setSearch]);
   if (error) return <div className="content-center">error...</div>;
   if (isLoading) return <div className="content-center">Loading...</div>;
 };
