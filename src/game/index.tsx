@@ -48,8 +48,11 @@ const Game = () => {
             <div className="lg:text-[30px] flex flex-row justify-between">
               <div className="font-semibold w-4/7">
                 {new Date(
-                  (game?.first_release_date ? game?.first_release_date : 1) *
-                    1000
+                  (game?.first_release_date
+                    ? game?.first_release_date
+                    : game?.created_at
+                    ? game?.created_at
+                    : 1) * 1000
                 ).toLocaleString("it-IT", {
                   dateStyle: "medium",
                 })}

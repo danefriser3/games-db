@@ -49,7 +49,7 @@ const SearchBar = ({ setSearch }: SearchForm) => {
       {ok && <SearchSWR value={value} setSearch={setSearch} setOk={setOk} />}
       <div className="flex flex-row p-2">
         <input
-          className="px-3 rounded-2xl shadow-2xl w-[200px] lg:w-[300px]"
+          className="px-3 rounded-2xl shadow-[-2px_2px_3px_rgba(0,0,0,0.5)] w-[200px] lg:w-[300px]"
           placeholder="Search..."
           value={value}
           onChange={(e) => setValue(e.target.value)}

@@ -1,4 +1,4 @@
-import Body from "./components/Body";
+import Body from "./components/games/Body";
 import { SearchRes } from "./utils/types/type";
 
 function App({ searchRes }: { searchRes: SearchRes }) {
